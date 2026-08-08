@@ -1,17 +1,25 @@
 import { NextResponse } from "next/server";
 import { SignJWT } from "jose";
 
-const secret = new TextEncoder().encode(process.env.ADMIN_PASSWORD || "miltadmin123");
-
 export async function POST(request: Request) {
   try {
+    const adminPassword = process.env.ADMIN_PASSWORD;
+
+    if (!adminPassword) {
+      return NextResponse.json(
+        { error: "ADMIN_PASSWORD environment variable is not configured" },
+        { status: 500 }
+      );
+    }
+
+    const secret = new TextEncoder().encode(adminPassword);
     const { password } = await request.json();
 
     if (!password) {
       return NextResponse.json({ error: "Password is required" }, { status: 400 });
     }
 
-    if (password !== process.env.ADMIN_PASSWORD) {
+    if (password !== adminPassword) {
       return NextResponse.json({ error: "Incorrect password" }, { status: 401 });
     }
 
