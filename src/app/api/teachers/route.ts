@@ -73,21 +73,3 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Failed to create teacher" }, { status: 500 });
   }
 }
-// 4. DELETE TEACHER (NEW)
-export async function DELETE(request: Request) {
-  try {
-    const { searchParams } = new URL(request.url);
-    const id = searchParams.get("id");
-
-    if (!id) {
-      return NextResponse.json({ error: "Teacher ID is required" }, { status: 400 });
-    }
-
-    await db.delete(teachers).where(eq(teachers.id, parseInt(id)));
-
-    return NextResponse.json({ success: true, message: "Teacher deleted successfully" });
-  } catch (error) {
-    console.error("Error deleting teacher:", error);
-    return NextResponse.json({ error: "Failed to delete teacher" }, { status: 500 });
-  }
-}
