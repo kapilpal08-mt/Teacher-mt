@@ -45,11 +45,11 @@ interface VoteActivity {
 // ─── Tier System ──────────────────────────────────────────────
 
 const TIERS = [
-  { min: 200, label: "Grandmaster", emoji: "👑", color: "text-amber-400", bg: "bg-amber-400/10", border: "border-amber-400/30" },
-  { min: 150, label: "Master", emoji: "💎", color: "text-cyan-400", bg: "bg-cyan-400/10", border: "border-cyan-400/30" },
-  { min: 100, label: "Expert", emoji: "⭐", color: "text-emerald-400", bg: "bg-emerald-400/10", border: "border-emerald-400/30" },
-  { min: 50, label: "Skilled", emoji: "🔥", color: "text-orange-400", bg: "bg-orange-400/10", border: "border-orange-400/30" },
-  { min: 20, label: "Learner", emoji: "📘", color: "text-sky-400", bg: "bg-sky-400/10", border: "border-sky-400/30" },
+  { min: 30, label: "Grandmaster", emoji: "👑", color: "text-amber-400", bg: "bg-amber-400/10", border: "border-amber-400/30" },
+  { min: 20, label: "Master", emoji: "💎", color: "text-cyan-400", bg: "bg-cyan-400/10", border: "border-cyan-400/30" },
+  { min: 15, label: "Expert", emoji: "⭐", color: "text-emerald-400", bg: "bg-emerald-400/10", border: "border-emerald-400/30" },
+  { min: 10, label: "Skilled", emoji: "🔥", color: "text-orange-400", bg: "bg-orange-400/10", border: "border-orange-400/30" },
+  { min: 5, label: "Learner", emoji: "📘", color: "text-sky-400", bg: "bg-sky-400/10", border: "border-sky-400/30" },
   { min: 1, label: "Beginner", emoji: "🌱", color: "text-slate-400", bg: "bg-slate-400/10", border: "border-slate-400/20" },
   { min: 0, label: "New", emoji: "🆕", color: "text-slate-500", bg: "bg-slate-500/5", border: "border-slate-500/15" },
 ];
@@ -594,7 +594,7 @@ function RankingTab({ teachers, loading }: { teachers: Teacher[]; loading: boole
 
 function PodiumCard({ t, rank }: { t: Teacher; rank: number }) {
   const tier = getTier(t.abilityScore);
-  const h = rank === 1 ? "h-48 sm:h-56" : rank === 2 ? "h-40 sm:h-48" : "h-36 sm:h-40";
+  const h = rank === 1 ? "h-48 sm:h-56" : rank === 2 ? "h-48 sm:h-56" : "h-48 sm:h-56";
   const grad = rank === 1 ? "from-amber-500/15 to-amber-500/5" : rank === 2 ? "from-slate-500/10 to-slate-500/2" : "from-orange-600/10 to-orange-600/2";
   const borderColor = rank === 1 ? "border-amber-500/40" : rank === 2 ? "border-slate-400/25" : "border-orange-600/25";
   const medals = ["", "🥇", "🥈", "🥉"];
