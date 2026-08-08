@@ -603,7 +603,8 @@ function PodiumCard({ t, rank }: { t: Teacher; rank: number }) {
     <div className="flex flex-col items-center group">
       <div className="text-3xl sm:text-4xl mb-3">{medals[rank]}</div>
       <div className={`w-full ${h} rounded-2xl bg-gradient-to-b ${grad} border ${borderColor} glass p-3 sm:p-5 flex flex-col items-center justify-end text-center`}>
-        <div className={`${rank === 1 ? "w-16 h-16 sm:w-20 sm:h-20" : "w-14 h-14 sm:w-16 sm:h-16"} rounded-full bg-slate-800 border-2 border-white/10 overflow-hidden -mb-3 shadow-xl`}>
+        {/* FIX: Yahan se ternary condition hata kar sabke liye w-16 h-16 sm:w-20 sm:h-20 kar diya hai */}
+        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-slate-800 border-2 border-white/10 overflow-hidden -mb-3 shadow-xl">
           {t.photoUrl ? <img src={t.photoUrl} alt="" className="w-full h-full object-cover" /> :
             <div className="w-full h-full flex items-center justify-center text-2xl text-slate-600"><SvgIcon d={Icons.user} className="w-8 h-8" /></div>}
         </div>
