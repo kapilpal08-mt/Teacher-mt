@@ -1,9 +1,8 @@
-import { NextResponse } from "next/server";
+Import { NextResponse } from "next/server";
 import { db } from "@/db";
 import { teachers, institutes, votes } from "@/db/schema";
 import { eq, sql, and } from "drizzle-orm";
 
-// 1. GET ALL TEACHERS
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -44,7 +43,6 @@ export async function GET(request: Request) {
   }
 }
 
-// 2. CREATE NEW TEACHER
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -75,39 +73,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Failed to create teacher" }, { status: 500 });
   }
 }
-
-// 3. EDIT / UPDATE TEACHER (NEW)
-export async function PUT(request: Request) {
-  try {
-    const body = await request.json();
-    const { id, name, subject, instituteId, photoUrl, bio, experience, status } = body;
-
-    if (!id) {
-      return NextResponse.json({ error: "Teacher ID is required" }, { status: 400 });
-    }
-
-    const updateData: Record<string, any> = {};
-    if (name !== undefined) updateData.name = name;
-    if (subject !== undefined) updateData.subject = subject;
-    if (instituteId !== undefined) updateData.instituteId = parseInt(instituteId);
-    if (photoUrl !== undefined) updateData.photoUrl = photoUrl;
-    if (bio !== undefined) updateData.bio = bio;
-    if (experience !== undefined) updateData.experience = experience;
-    if (status !== undefined) updateData.status = status;
-
-    const [updated] = await db
-      .update(teachers)
-      .set(updateData)
-      .where(eq(teachers.id, parseInt(id)))
-      .returning();
-
-    return NextResponse.json(updated);
-  } catch (error) {
-    console.error("Error updating teacher:", error);
-    return NextResponse.json({ error: "Failed to update teacher" }, { status: 500 });
-  }
-}
-
 // 4. DELETE TEACHER (NEW)
 export async function DELETE(request: Request) {
   try {
