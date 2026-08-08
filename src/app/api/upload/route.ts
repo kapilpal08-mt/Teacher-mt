@@ -1,7 +1,12 @@
 import { NextResponse } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
-import { v4 as uuidv4 } from "uuid";
+import { v2 as cloudinary } from "cloudinary";
+
+// Netlify environment variables se Cloudinary automatically config ho jayega
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 export async function POST(request: Request) {
   try {
@@ -29,20 +34,22 @@ export async function POST(request: Request) {
       );
     }
 
-    const ext = file.name.split(".").pop() || "jpg";
-    const fileName = `teacher-${uuidv4()}.${ext}`;
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
+    // File ko buffer mein convert karein
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
 
-    // Ensure upload directory exists
-    await mkdir(uploadDir, { recursive: true });
+    // Photo ko Cloudinary par upload karein
+    const result = await new Promise<{ secure_url: string }>((resolve, reject) => {
+      cloudinary.uploader
+        .upload_stream({ folder: "teacher_uploads" }, (error, result) => {
+          if (error || !result) reject(error);
+          else resolve(result);
+        })
+        .end(buffer);
+    });
 
-    const filePath = path.join(uploadDir, fileName);
-    const buffer = Buffer.from(await file.arrayBuffer());
-    await writeFile(filePath, buffer);
-
-    const url = `/uploads/${fileName}`;
-
-    return NextResponse.json({ url, success: true });
+    // Netlify crash nahi hoga, aur direct Cloudinary ka Image URL return hoga
+    return NextResponse.json({ url: result.secure_url, success: true });
   } catch (error) {
     console.error("Error uploading file:", error);
     return NextResponse.json({ error: "Failed to upload file" }, { status: 500 });
