@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/reset-votes?secret=my_super_secret_cron_key_123",
+      "schedule": "0 0 1 * *"
+    }
+  ]
+}
